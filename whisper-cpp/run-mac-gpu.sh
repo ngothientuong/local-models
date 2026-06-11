@@ -85,6 +85,12 @@ echo "[model] using $MODEL_FILE"
 [ "$BUILD_ONLY" = "1" ] && { echo "[done] build-only requested."; exit 0; }
 
 # --- serve -------------------------------------------------------------------
+# Run from a stable runtime dir: --convert writes temp WAVs relative to CWD, and
+# a CWD deleted later (e.g. by a git checkout) breaks every conversion with
+# "getcwd: No such file or directory".
+RUNTIME_DIR="${INSTALL_DIR}/run"
+mkdir -p "$RUNTIME_DIR"
+cd "$RUNTIME_DIR"
 CMD=("$SERVER_BIN" -m "$MODEL_FILE" --host 127.0.0.1 --port "$PORT" -t "$(sysctl -n hw.ncpu)" --convert)
 if [ "$FOREGROUND" = "1" ]; then
     exec "${CMD[@]}"

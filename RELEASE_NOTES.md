@@ -1,5 +1,16 @@
 # Release Notes — local-models
 
+## 0.1.1 — 2026-06-11
+
+- **fix(whisper-cpp/run-mac-gpu.sh)**: start `whisper-server` from a stable runtime dir
+  (`~/.local/share/whisper-cpp/run`). Previously the server inherited the caller's CWD;
+  `--convert` writes its temp WAV relative to CWD, so a later deletion of that directory
+  (e.g. a `git checkout` removing the folder the server was started from) broke every
+  conversion with `getcwd: No such file or directory` / HTTP 500 "FFmpeg conversion failed".
+  Container path unaffected (stable CWD `/`); no image rebuild required.
+- Verified post-fix: 65-file DELF batch re-run — 0 failures, ~63× realtime warm, 65/65
+  outputs byte-identical to the 0.1.0 corpus.
+
 ## 0.1.0 — 2026-06-11
 
 Initial release.
