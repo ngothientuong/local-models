@@ -1,0 +1,6 @@
+docs/
+scripts/
+README.md
+run.sh
+run-mac-gpu.sh
+*.log
